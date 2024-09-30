@@ -15,9 +15,10 @@ const ShopContextProvider =(props)=>{
     const [showSearch, setShowSearch] = useState(false)
     const [cartItems, setCartItems] = useState({})
     const [products, setProducts] = useState([])
+    const [token, setToken] = useState('')
     const navigate = useNavigate()
 
-    console.log(backendUrl)
+    
     
     const addToCart = async (itemId, size)=>{
         if(!size){
@@ -78,20 +79,29 @@ const ShopContextProvider =(props)=>{
          }
          return totalAmount
      }
-    console.log(backendUrl + '/api/product/list')
-
+    
      const getProductsData = async ()=>{
          try {
             const response = await axios.get(backendUrl + '/api/product/list') 
-            console.log(response.data)
+            if(response.data.success){
+                setProducts(response.data.products)
+            }else{
+                toast.error(response.data.message)
+            }
          } catch (error) {
             console.log(error)
+            toast.error(error.message)
          }
      }
 
      useEffect(()=>{
-
           getProductsData()
+     },[])
+
+     useEffect(()=>{
+      if(!token && localStorage.getItem('token')){
+        setToken(localStorage.getItem('token'))
+      }
      },[])
 
      
@@ -102,7 +112,8 @@ const ShopContextProvider =(props)=>{
         search, setSearch, showSearch, setShowSearch,
         cartItems, addToCart,
         getCartCount,updateQuantity,
-        getCartAmount, navigate, backendUrl
+        getCartAmount, navigate, backendUrl,
+        setToken, token
 
     }
 
