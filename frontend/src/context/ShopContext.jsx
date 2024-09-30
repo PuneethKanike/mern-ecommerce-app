@@ -134,6 +134,14 @@ const ShopContextProvider =(props)=>{
       }
      },[])
 
+     useEffect(() => {
+  if (token) {
+    getUserCart(token); // Fetch cart items after login
+  } else {
+    setCartItems({}); // Clear cart if no token
+  }
+}, [token]);
+
      
 
 
