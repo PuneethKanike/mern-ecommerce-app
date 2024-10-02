@@ -7,6 +7,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const PlaceOrder = () => {
+  const [isDisabled, setIsDisabled] = useState(true);
   const {
     navigate,
     backendUrl,
@@ -289,12 +290,26 @@ const PlaceOrder = () => {
             </div>
           </div>
           <div className='w-full text-end mt-8'>
-            <button
+            {
+              token ? <button
               type='submit'
               className='bg-black text-white px-16 py-3 text-sm active:bg-gray-700 hover:bg-gray-800 hover:shadow-lg hover:scale-105 transition-all duration-300 ease-in-out transform'
             >
               Place Order
-            </button>
+            </button> 
+            :
+            <button
+      type='submit'
+      className={`bg-black text-white px-16 py-3 text-sm ${
+        isDisabled ? 'opacity-50 cursor-not-allowed' : ''
+      }`}
+      disabled={isDisabled}
+    >
+      Login to place order
+    </button> 
+            }
+
+            
           </div>
         </div>
       </div>
